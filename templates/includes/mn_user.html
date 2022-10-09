@@ -1,0 +1,119 @@
+{% extends 'coba.html' %}
+
+{% block body %}
+<h3>User</h3>
+<hr>
+<div class="container">
+  <div class="card">
+    <div class="card-header alert-primary">
+      <b>Daftar Pasien</b>
+    </div>
+    <div class="card-body">
+      <div class="col-md-2">
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tambahuser">
+          <small><b><i class='bx bx-plus'></i> Tambah User</b></small>
+        </button>
+      </div><br>
+      <div class="table-responsive">
+        <table class="table text-center table-bordered table-sm table-striped table-hover" id="user"  class="display">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Username</th>
+              <th>Level</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in user %}
+            <tr>
+              <td>{{row.0}}</td>
+              <td>{{row.2}}</td>
+              <td>{{row.5}}</td>
+              <td>
+                <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#edituser{{ row.0 }}"><b><i class='bx bx-pencil'></i> Edit</b></button>
+                <a href="/hapususer/{{ row.0 }}" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin hapus?')"><b><i class='bx bx-trash'></i> Hapus</b></a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Tambah-->
+  <div class="modal fade" id="tambahuser" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="tambahdokterLabel">Tambah User</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form action="{{url_for('simpanuser')}}" method="POST">
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Username</label>
+                    <input type="text" class="form-control" name="username">
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Password</label>
+                  <input type="password" class="form-control" name="password">
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Role</label>
+                  <select name="level" id="" class="form-select" required>
+                    <option name="level">Pilih...</option>
+                    <option name="level">Admin</option>
+                    <option name="level">Petugas</option> 
+                  </select>
+                </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success form-control">Simpan</button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Edit -->
+  {% for row in user %}
+  <div class="modal fade" id="edituser{{ row.0 }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit User</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form action="{{url_for('edituser')}}" method="POST">
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Username</label>
+                    <input type="hidden" class="form-control" name="id" value="{{ row.0 }}">
+                    <input type="text" class="form-control" name="username" value="{{ row.2 }}">
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Password</label>
+                  <input type="password" class="form-control" name="password" value="{{ row.4 }}">
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Level</label>
+                  <select value="{{ row.5 }}" name="level" id="" class="form-select" required>
+                    <option>{{ row.5 }}</option>
+                    <option name="level" value="Admin">Admin</option>
+                    <option name="level" value="Petugas">Petugas</option> 
+                  </select>
+                </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-success form-control">Simpan</button>
+        </div>
+        </form>
+     </div>
+  </div>
+</div>
+</div>
+      {% endfor %}
+        
+{% endblock %}

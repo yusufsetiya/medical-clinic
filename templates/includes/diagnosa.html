@@ -1,0 +1,99 @@
+{% extends 'coba.html' %}
+
+{% block body %}
+<h3>Daftar Antrian Pasien</h3>
+<hr>
+<div class="container">
+  <div class="card">
+    <div class="card-header alert-success">
+      <b>Daftar Antrian Pasien</b>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-sm table-bordered table-striped table-hover text-center" id="pasien"  class="display">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Nama Pasien</th>
+              <th scope="col">Waktu Daftar</th>
+              <th scope="col">Keluhan</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in pasien %}
+            <tr>
+              <td>{{row.0}}</td>
+              <td>{{row.6}}</td>
+              <td>{{row.2}}</td>
+              <td>{{row.4}}</td>
+              <td>
+                <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#tangani{{ row.0 }}"><b><i class='bx bx-pencil'></i> Tangani</b></button>
+                <a href="/hapustangani/{{ row.0 }}" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin hapus?')"><b><i class='bx bx-trash'></i> Hapus</b></a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Edit -->
+  {% for row in pasien %}
+  <div class="modal fade" id="tangani{{ row.0 }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header alert-success">
+          <h5 class="modal-title"><b>Diagnosa Pasien</b></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="card" style="width: 48rem;">
+                <div class="card-body">
+                  <h5 class="card-title"><b>Biodata Pasien</b></h5>
+                  <hr>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <p class="form-label"><b>Nama Pasien</b> : {{row.6}}</p>
+                      <p class="form-label"><b>Jenis Kelamin</b> : {{row.9}}</p>
+                    </div>
+                    <div class="col-md-6">
+                      <p class="form-label"><b>Tanggal Lahir</b> : {{row.8.strftime("%d %B %Y")}}</p>
+                      <p class="form-label"><b>Keluhan</b> : {{row.4}}</p>    
+                    </div>
+                  </div>
+                </div>
+              </div>
+          <form action="{{url_for('simpandiagnosa')}}" method="POST">
+            <div class="row mt-2">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Diagnosa</label>
+                  <textarea class="form-control" name="diagnosa" id="" cols="30" rows="3"></textarea>
+              </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Resep</label>
+                  <textarea class="form-control" name="resep" id="" cols="30" rows="3"></textarea>
+              </div>
+              <input type="hidden" name="nama" value="{{row.5}}">
+              <input type="hidden" name="dokter" value="{{row.3}}">
+              <input type="hidden" name="id" value="{{row.0}}">
+              </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary form-control">Simpan</button>
+        </div>   
+      </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+</form>
+      {% endfor %}
+        
+{% endblock %}

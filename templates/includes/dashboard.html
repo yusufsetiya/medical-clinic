@@ -1,0 +1,182 @@
+{% extends 'coba.html' %}
+
+{% block body %}
+<h3>Dashboard</h3>
+<hr>
+<div class="container">
+    {% if session.level == 'Admin' %}
+    <div class="row center">
+      <div class="col-xl-3 col-md-6 mb-4">
+          <div class="card border-left-danger bg-light shadow h-100 py-2">
+              <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                      <div class="col mr-2">
+                          <div class="text-xs font-weight-bold dark text-uppercase mb-1">Dokter</div>
+                          {% for dok in dokter %}
+                          <div class="h2 mb-0 font-weight-bold text-gray-800"><b>{{dok.0}}</b></div>
+                          {% endfor %}
+                        </div>
+                      <div class="col-auto">
+                        <i class='bx bx-plus-medical dash-icon'></i>
+                          <!-- <i class="fas fa-box fa-2x text-gray-300"><i class="fa fa-user"></i></i> -->
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="col-xl-3 col-md-6 mb-4">
+          <div class="card border-left-danger bg-light shadow h-100 py-2">
+              <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                      <div class="col mr-2">
+                          <div class="text-xs font-weight-bold dark text-uppercase mb-1">Petugas</div>
+                          {% for pet in petugast %}
+                          <div class="h2 mb-0 font-weight-bold text-gray-800"><b><b>{{pet.0}}</b></b></div>
+                          {% endfor %}
+                        </div>
+                      <div class="col-auto">
+                        <i class='bx bx-user-circle dash-icon'></i>
+                          <!-- <i class="fas fa-box fa-2x text-gray-300"><i class="fa fa-user"></i></i> -->
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="col-xl-3 col-md-6 mb-4">
+          <div class="card border-left-danger bg-light shadow h-100 py-2">
+              <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                      <div class="col mr-2">
+                          <div class="text-xs font-weight-bold dark text-uppercase mb-1">Antrian Pasien</div>
+                          {% for pas in pasient %}
+                          <div class="h2 mb-0 font-weight-bold text-gray-800"><b>{{pas.0}}</b></div>
+                          {% endfor %}
+                      </div>
+                      <div class="col-auto">
+                        <i class='bx bx-user dash-icon'></i>
+                          <!-- <i class="fas fa-box fa-2x text-gray-300"><i class="fa fa-user"></i></i> -->
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="col-xl-3 col-md-6 mb-4">
+          <div class="card border-left-danger bg-light shadow h-100 py-2">
+              <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                      <div class="col mr-2">
+                          <div class="text-xs font-weight-bold dark text-uppercase mb-1">Pasien Dilayani</div>
+                          {% for done in pdonest %}
+                          <div class="h2 mb-0 font-weight-bold text-gray-800"><b>{{done.0}}</b></div>
+                          {% endfor %}
+                      </div>
+                      <div class="col-auto">
+                        <i class='bx bx-user-check dash-icon'></i>
+                          <!-- <i class="fas fa-box fa-2x text-gray-300"><i class="fa fa-user"></i></i> -->
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div> 
+    </div>
+    {% elif session.level == 'Dokter' %}
+    <div class="row center">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-danger bg-light shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold dark text-uppercase mb-1">Antrian Pasien</div>
+                            {% for pas in pasdok %}
+                            <div class="h2 mb-0 font-weight-bold text-gray-800"><b>{{pas.0}}</b></div>
+                            {% endfor %}
+                        </div>
+                        <div class="col-auto">
+                          <i class='bx bx-user dash-icon'></i>
+                            <!-- <i class="fas fa-box fa-2x text-gray-300"><i class="fa fa-user"></i></i> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-danger bg-light shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold dark text-uppercase mb-1">Pasien Dilayani</div>
+                            {% for done in dondok %}
+                            <div class="h2 mb-0 font-weight-bold text-gray-800"><b>{{done.0}}</b></div>
+                            {% endfor %}
+                        </div>
+                        <div class="col-auto">
+                          <i class='bx bx-user-check dash-icon'></i>
+                            <!-- <i class="fas fa-box fa-2x text-gray-300"><i class="fa fa-user"></i></i> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+      </div>
+      {% elif session.level == 'Petugas' %}
+      <div class="row center">
+        <div class="col-xl-3 col-md-4 mb-4">
+            <div class="card border-left-danger bg-light shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold dark text-uppercase mb-1">Jumlah Pasien</div>
+                            {% for pas in pasien %}
+                            <div class="h2 mb-0 font-weight-bold text-gray-800"><b>{{pas.0}}</b></div>
+                            {% endfor %}
+                        </div>
+                        <div class="col-auto">
+                          <i class='bx bx-user dash-icon'></i>
+                            <!-- <i class="fas fa-box fa-2x text-gray-300"><i class="fa fa-user"></i></i> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-4 mb-4">
+            <div class="card border-left-danger bg-light shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold dark text-uppercase mb-1">Antrian Pasien</div>
+                            {% for pas in pasient %}
+                            <div class="h2 mb-0 font-weight-bold text-gray-800"><b>{{pas.0}}</b></div>
+                            {% endfor %}
+                        </div>
+                        <div class="col-auto">
+                          <i class='bx bx-user dash-icon'></i>
+                            <!-- <i class="fas fa-box fa-2x text-gray-300"><i class="fa fa-user"></i></i> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-4 mb-4">
+            <div class="card border-left-danger bg-light shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold dark text-uppercase mb-1">Pasien Dilayani</div>
+                            {% for done in pdonest %}
+                            <div class="h2 mb-0 font-weight-bold text-gray-800"><b>{{done.0}}</b></div>
+                            {% endfor %}
+                        </div>
+                        <div class="col-auto">
+                          <i class='bx bx-user-check dash-icon'></i>
+                            <!-- <i class="fas fa-box fa-2x text-gray-300"><i class="fa fa-user"></i></i> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+      </div>
+      {% endif %}
+</div>
+    
+    <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
+{% endblock %}

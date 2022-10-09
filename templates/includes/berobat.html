@@ -1,0 +1,41 @@
+{% extends 'coba.html' %}
+
+{% block body %}
+<h3>Daftar Antrian Berobat</h3>
+<hr>
+<div class="container">
+  <div class="card">
+    <div class="card-header alert-warning">
+      <b>Daftar Antrian</b>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-sm table-bordered table-striped table-hover text-center" id="pasien"  class="display">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Nama Pasien</th>
+              <th scope="col">Dokter</th>
+              <th scope="col">Waktu Daftar</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in pasien %}
+            <tr>
+              <td>{{row.0}}</td>
+              <td>{{row.6}}</td>
+              <td>{{row.16}}</td>
+              <td>{{row.2}}</td>
+              <td>
+                <a href="/hapusberobat/{{ row.0 }}" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin hapus?')"><b><i class='bx bx-trash'></i> Hapus</b></a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+        
+{% endblock %}

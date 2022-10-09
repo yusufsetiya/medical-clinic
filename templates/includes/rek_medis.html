@@ -1,0 +1,164 @@
+{% extends 'coba.html' %}
+
+{% block body %}
+<h3>Rekam Medis</h3>
+<hr>
+<div class="container">
+  <div class="card">
+    <div class="card-header alert-primary">
+      <b>Daftar Rekam Medis</b>
+    </div>
+    <div class="card-body">
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tambahmedis">
+           <small><b><i class='bx bx-plus'></i> Tambah Rekam Medis</b></small>
+        </button>
+        <br><br>
+      <div class="table-responsive">
+        <table class="table text-center table-sm table-bordered table-striped table-hover" id="pasien"  class="display">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Nama Pasien</th>
+              <th scope="col">Dokter</th>
+              <th scope="col">Tanggal Berobat</th>
+              <th scope="col">Jam Berobat</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in user %}
+            <tr>
+              <td>{{row.0}}</td>
+              <td>{{row.7}}</td>
+              <td>{{row.17}}</td>
+              <td>{{row.5.strftime("%d %B %Y")}}</td>
+              <td>{{row.5.strftime("%H:%M:%S")}}</td>
+              <td>
+                <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editpasien{{ row.0 }}"><b><i class='bx bx-pencil'></i> Edit</b></button>
+                <a href="/hapusmedis/{{ row.0 }}" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin hapus?')"><b><i class='bx bx-trash'></i> Hapus</b></a>
+              </td>
+            </tr>
+            {% endfor %}
+            
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Tambah-->
+  <div class="modal fade" id="tambahmedis" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="tambahdokterLabel">Tambah Rekam Medis</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form action="{{url_for('simpanmedis')}}" method="POST">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Nama Pasien</label>
+                            <select  name="nama" id="" class="form-select" required>
+                                    <option>Pilih...</option>
+                                    {% for row in pasiens %}
+                                    <option name="nama" value="{{row.0}}" >{{row.1}}</option> 
+                                    {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Dokter Yang Menangani</label>
+                            <select  name="dokter" id="" class="form-select" required>
+                                    <option>Pilih...</option>
+                                    {% for dok in dokters %}
+                                      <option name="dokter" value="{{dok.0}}" >{{dok.2}}</option> 
+                                    {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Diagnosa</label>
+                    <textarea class="form-control" name="diagnosa" id="" cols="30" rows="3"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Resep</label>
+                    <textarea class="form-control" name="resep" id="" cols="30" rows="3"></textarea>
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Tanggal Diperiksa</label>
+                  <input name="tanggal" required type="datetime-local" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success form-control">Simpan</button> 
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Edit -->
+  {% for row in user %}
+  <div class="modal fade" id="editpasien{{ row.0 }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit Rekam Medis</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="{{url_for('editmedis')}}" method="POST">
+            <input type="text" name="id" class="form-control" value="{{row.0}}" readonly>
+              <div class="row">
+                  <div class="col-md-6">
+                      <div class="mb-3">
+                        <input type="hidden" name="id" value="{{row.0}}">
+                          <label for="exampleInputEmail1" class="form-label">Nama Pasien</label>
+                          <select  name="nama" id="" class="form-select" required>
+                            <option  name="nama" value="{{row.6}}">{{row.7}}</option>
+                          </select>
+                          <!-- <input type="text" class="form-control" value="{{row.8}}" readonly>
+                          <input type="text" name="nama" class="form-control" value="{{row.7}}" readonly> -->
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="mb-3">
+                          <label for="exampleInputEmail1" class="form-label">Dokter Yang Menangani</label>
+                          <select  name="dokter" id="" class="form-select" required>
+                                  <option name="dokter" value="{{row.15}}">{{row.17}}</option>
+                                {% for dok in dokters %}
+                                  <option name="dokter" value="{{dok.0}}" >{{dok.2}}</option> 
+                                {% endfor %}
+                          </select>
+                      </div>
+                  </div>
+              </div>
+              <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Diagnosa</label>
+                  <textarea class="form-control" name="diagnosa" id="" cols="30" rows="3">{{row.3}}</textarea>
+              </div>
+              <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Resep</label>
+                  <textarea class="form-control" name="resep" id="" cols="30" rows="3">{{row.4}}</textarea>
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Tanggal Diperiksa</label>
+                  <input name="tanggal" value="{{row.5}}" required type="date" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+              </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-success form-control">Simpan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+</form>
+      {% endfor %}
+        
+{% endblock %}
